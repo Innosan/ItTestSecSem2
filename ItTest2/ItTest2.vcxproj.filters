@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Menu">
+      <UniqueIdentifier>{41cd0367-9f47-421a-9425-e9adcd4df2d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{4db9c34b-3e16-4883-bfab-4502b5fb3200}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{7a883e84-3906-4c5f-b908-ffa0da4e1310}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models\Mammal">
+      <UniqueIdentifier>{c34b8864-b30f-47af-8112-2b49b92acd88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models\Carnivore">
+      <UniqueIdentifier>{1b75ba4c-f7f8-4c2d-9f7c-6384bfc8e1bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models\Herbivore">
+      <UniqueIdentifier>{9eb15086-f763-4502-85eb-505166e00db0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controllers">
+      <UniqueIdentifier>{a660d44a-5a3f-476e-9250-dc95f187c99e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ItTest2.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuOption.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="inputs.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Mammal.cpp">
+      <Filter>Models\Mammal</Filter>
+    </ClCompile>
+    <ClCompile Include="Carnivore.cpp">
+      <Filter>Models\Carnivore</Filter>
+    </ClCompile>
+    <ClCompile Include="Herbivore.cpp">
+      <Filter>Models\Herbivore</Filter>
+    </ClCompile>
+    <ClCompile Include="MammalController.cpp">
+      <Filter>Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="files.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Menu.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuOption.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="inputs.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Mammal.h">
+      <Filter>Models\Mammal</Filter>
+    </ClInclude>
+    <ClInclude Include="Carnivore.h">
+      <Filter>Models\Carnivore</Filter>
+    </ClInclude>
+    <ClInclude Include="Herbivore.h">
+      <Filter>Models\Herbivore</Filter>
+    </ClInclude>
+    <ClInclude Include="MammalController.h">
+      <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="files.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
