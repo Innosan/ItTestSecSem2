@@ -4,6 +4,8 @@
 #include <vector>
 #include <algorithm>
 #include "Mammal.h"
+#include "Herbivore.h"
+#include "Carnivore.h"
 
 class MammalController
 {
@@ -19,5 +21,16 @@ public:
 			mammal->description();
 		}
 	}
-};
 
+	void setMammals(std::vector<Mammal*> mammals) {
+		this->mammals = mammals;
+	}
+
+	std::vector<Mammal*> getMammals() {
+		return mammals;
+	}
+
+	static Mammal* getMammalFromUser();
+	static Herbivore* getHerbivoreFromUser();
+	static Carnivore* getCarnivoreFromUser();
+};

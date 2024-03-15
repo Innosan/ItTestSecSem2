@@ -1,11 +1,14 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-
-#include <vector>
-#include "Mammal.h"
-#include "files.h"
 #include <regex>
+#include <vector>
+
+#include "Mammal.h"
+#include "Herbivore.h"
+#include "Carnivore.h"
+
+#include "files.h"
 
 using namespace std;
 
@@ -26,89 +29,111 @@ bool confirmOverwrite(const std::string& filename) {
 	return std::tolower(answer) == 'y';
 }
 
-vector<Mammal> getFilesFromFile(string fileName) {
-	vector<Mammal> newMammals;
+vector<Mammal*> getMammalsFromFile(string fileName) {
+	vector<Mammal*> mammals;
 
 	ifstream inputFile(fileName);
 	if (!inputFile.is_open()) {
 		cerr << "Error opening file: " << fileName << endl;
-		return newMammals; // Return empty vector on error
+		return mammals; // Return empty vector on error
 	}
 
 	string line;
 	while (getline(inputFile, line)) {
-
 		// Handle empty lines or lines with incorrect formatting
 		if (line.empty()) {
 			cerr << "Warning: Skipped empty line." << endl;
 			continue;
 		}
 
-		//stringstream ss(line);
-		//string token;
-		//int fieldCount = 0;
+		stringstream ss(line);
+		string token;
+		int fieldCount = 0;
 
-		//int id = 0;
-		//string title = "";
-		//string createdAt = "";
-		//int size = 0;
-		//int usage = 0;
+		string title = "";
+		string diet = "";
+		double weight = 0.0;
+		string habitat = "";
 
-		//// Extract data from the line
-		//while (getline(ss, token, ',')) {
-		//	try {
-		//		switch (fieldCount) {
-		//		case 0: id = stoi(token); break;
-		//		case 1: title = token; break;
-		//		case 2: createdAt = token; break;
-		//		case 3: size = stoi(token); break;
-		//		case 4: usage = stoi(token); break;
-		//		default:
-		//			// Handle unexpected field count
-		//			std::cerr << "Warning: parsing " << fieldCount << " field: " << "wrong number of fileds" << std::endl;
-		//		}
-		//	}
-		//	catch (const std::invalid_argument& e) {
-		//		// Handle conversion error
-		//		std::cerr << "Warning: converting field " << fieldCount << ": " << e.what() << std::endl;
-		//		// You can choose to skip the line, continue without the value, or throw an exception
-		//	}
+		// Additional fields for inherited classes
+		bool isMigrating = false;
+		double aggressionRate = 0.0;
 
-		//	fieldCount++;
-		//}
+		// Extract data from the line
+		while (getline(ss, token, ',')) {
+			try {
+				switch (fieldCount) {
+				case 0: title = token; break;
+				case 1: weight = stod(token); break;
+				case 2: habitat = token; break;
+				case 3: diet = token; break;
+				case 4:
+					if (diet == "Herbivore") {
+						isMigrating = (token == "1" ? true : false);
+					}
+					else if (diet == "Carnivore") {
+						aggressionRate = stod(token);
+					}
+					break;
+				default:
+					// Handle unexpected field count
+					std::cerr << "Warning: parsing " << fieldCount << " field: " << "wrong number of fields" << std::endl;
+				}
+			}
+			catch (const std::invalid_argument& e) {
+				// Handle conversion error
+				std::cerr << "Warning: converting field " << fieldCount << ": " << e.what() << std::endl;
+				// You can choose to skip the line, continue without the value, or throw an exception
+			}
 
-		//// Create a File object and add it to the vector
-		//Mammal mammal( title, createdAt, size, usage);
-		//newMammals.push_back(file);
+			fieldCount++;
+		}
+
+		// Create a Mammal object and add it to the vector
+		if (diet == "Herbivore") {
+			mammals.push_back(new Herbivore(title, weight, habitat, isMigrating));
+		}
+		else if (diet == "Carnivore") {
+			mammals.push_back(new Carnivore(title, weight, habitat, aggressionRate));
+		}
+		else {
+			mammals.push_back(new Mammal(title, weight, habitat, diet));
+		}
 	}
 
 	inputFile.close();
-	return newMammals;
+	return mammals;
 };
 
-bool validateFileInput(string fileName, string path) {
-	regex fileNameRegex("^[a-zA-Z0-9_.]+$");
-	regex pathRegex("((?:[^/]*/)*)(.*)");
+bool isFilePathValid(const std::string& filePath) {
 
-	return regex_match(fileName, fileNameRegex) && regex_match(path, pathRegex);
+	// Regular expression to match a valid file path (Windows)
+	regex filePathRegex("^(?:[a-zA-Z]\\:|\\\\)\\\\([^\\\\]+\\\\)*[^\\/:*?\"<>|]+\\.csv$");
+
+	if (!regex_match(filePath, filePathRegex)) {
+		std::cerr << "Error: Invalid file path." << std::endl;
+		return false;
+	}
+
+	return true;
 }
 
-void exportToFile(vector<Mammal*> mammalsToExport) {
+void exportToFile(const vector<Mammal*>& mammals) {
 	string fileName = "";
 
 	string path = "";
 
 	do {
-		cout << "Input file name: ";
+		cout << "Input file name (only csv available): ";
 		cin >> fileName;
 
 		cout << "Input full path: \n";
 		cin >> path;
 
-	} while (!validateFileInput(fileName, path));
+	} while (!isFilePathValid(path + fileName));
 
-
-	string fullPath = path + fileName + ".csv";
+	string fullPath = path + fileName;
+	cout << "Full path: " << fullPath << endl;
 
 	// Check if file exists and prompt user for overwrite
 	if (fileExists(fullPath)) {
@@ -118,16 +143,28 @@ void exportToFile(vector<Mammal*> mammalsToExport) {
 		}
 	}
 
-	// Write data to file
-	ofstream file(path + fileName + ".csv");
-	if (file.is_open()) {
-		for (Mammal* mammal : mammalsToExport) {
-			file << mammal->getDiet() << "," << mammal->getTitle() << "," << mammal->getHabitat() << ","
-				<< mammal->getWeight() << "\n";
+	ofstream outputFile(fullPath);
+	if (!outputFile.is_open()) {
+		cerr << "Error opening file: " << fullPath << endl;
+		return; // Return on error
+	}
+
+	for (Mammal* mammal : mammals) {
+		outputFile << mammal->getTitle() << ","
+			<< mammal->getWeight() << ","
+			<< mammal->getHabitat() << ","
+			<< mammal->getDiet();
+
+		// Check if the mammal is a Herbivore or Carnivore and write additional data
+		if (Herbivore* herbivore = dynamic_cast<Herbivore*>(mammal)) {
+			outputFile << "," << (herbivore->getIsMigrating() ? 1 : 0);
 		}
-		file.close();
+		else if (Carnivore* carnivore = dynamic_cast<Carnivore*>(mammal)) {
+			outputFile << "," << carnivore->getAggressionRate();
+		}
+
+		outputFile << "\n";
 	}
-	else {
-		std::cerr << "Error opening file for writing." << std::endl;
-	}
-};
+
+	outputFile.close();
+}

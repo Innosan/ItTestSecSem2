@@ -18,6 +18,9 @@ class Menu
 public:
 	enum optionsIds {
 		PRINT = 1,
+		ADD_MAMMAL,
+		READ_FROM_FILE,
+		SAVE_TO_FILE,
 		EXIT,
 	};
 
