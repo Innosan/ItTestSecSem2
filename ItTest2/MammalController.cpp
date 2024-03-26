@@ -10,7 +10,7 @@
 
 Mammal* MammalController::getMammalFromUser() {
 	std::string title = getStringUserInput("Enter the title of the mammal: ");
-	double weight = getDoubleUserInput("Enter the weight of the mammal: ");
+	double weight = getDoubleUserInput("Enter the weight of the mammal: ", 0, 10000);
 	std::string habitat = getStringUserInput("Enter the habitat of the mammal: ");
 
 	return new Mammal(title, weight, habitat, "Unknown");
@@ -28,7 +28,7 @@ Herbivore* MammalController::getHerbivoreFromUser() {
 
 Carnivore* MammalController::getCarnivoreFromUser() {
 	Mammal* baseMammal = MammalController::getMammalFromUser();
-	double aggressionRate = getDoubleUserInput("Enter the aggression rate of the carnivore: ");
+	double aggressionRate = getDoubleUserInput("Enter the aggression rate of the carnivore: ", -1, 2);
 
 	auto* newCarnivore = new Carnivore(baseMammal->getTitle(), baseMammal->getWeight(), baseMammal->getHabitat(), aggressionRate);
 	delete baseMammal; // We don't need the baseMammal anymore, so we can delete it

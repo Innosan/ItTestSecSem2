@@ -22,8 +22,8 @@ public:
 		}
 	}
 
-	void setMammals(std::vector<Mammal*> mammals) {
-		this->mammals = mammals;
+	void setMammals(std::vector<Mammal*> newMammals) {
+		this->mammals = newMammals;
 	}
 
 	std::vector<Mammal*> getMammals() {

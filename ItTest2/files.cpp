@@ -9,6 +9,7 @@
 #include "Carnivore.h"
 
 #include "files.h"
+#include "inputs.h"
 
 using namespace std;
 
@@ -111,60 +112,117 @@ bool isFilePathValid(const std::string& filePath) {
 	regex filePathRegex("^(?:[a-zA-Z]\\:|\\\\)\\\\([^\\\\]+\\\\)*[^\\/:*?\"<>|]+\\.csv$");
 
 	if (!regex_match(filePath, filePathRegex)) {
-		std::cerr << "Error: Invalid file path." << std::endl;
+		cerr << "Error: Invalid file path." << endl;
 		return false;
 	}
 
 	return true;
 }
 
-void exportToFile(const vector<Mammal*>& mammals) {
-	string fileName = "";
+bool isFileNameValid(const std::string& fileName) {
+	// Regular expression to match a valid file name
+	regex fileNameRegex("^[^\\/:*?\"<>|]+\\.csv$");
+	// Regular expression to match reserved file names in Windows
+	regex fileNameReservedNames("^(?:CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9]|con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\\..*)?$");
+	// Regular expression to match reserved characters in Windows file names
+	regex fileNameReservedChars("[\\/:*?\"<>|]");
 
-	string path = "";
+	if (!regex_match(fileName, fileNameRegex)) {
+		cerr << "Error: Invalid file name." << std::endl;
+		return false;
+	}
 
-	do {
-		cout << "Input file name (only csv available): ";
-		cin >> fileName;
+	if (regex_match(fileName, fileNameReservedNames)) {
+		cerr << "Error: Invalid file name. Using reserved filenames is prohibited!" << std::endl;
+		return false;
+	}
 
-		cout << "Input full path: \n";
-		cin >> path;
+	if (regex_search(fileName, fileNameReservedChars)) {
+		cerr << "Error: Invalid file name. Using reserved characters is prohibited!" << std::endl;
+		return false;
+	}
 
-	} while (!isFilePathValid(path + fileName));
+	return true;
+}
 
-	string fullPath = path + fileName;
-	cout << "Full path: " << fullPath << endl;
+string getValidFilePath() {
+	bool isPathValid = false;
+	bool isNameValid = false;
 
-	// Check if file exists and prompt user for overwrite
-	if (fileExists(fullPath)) {
-		if (!confirmOverwrite(fullPath)) {
-			std::cerr << "Error: File already exists and user chose not to overwrite." << std::endl;
-			return;
+	string filename = "";
+	string filepath = "";
+
+	while (!isPathValid && !isNameValid) {
+		filename = getStringUserInput("Input filename (only csv acceptable): ");
+		filepath = getStringUserInput("Input full path to path: ");
+
+		if (isFilePathValid(filepath + filename) && isFileNameValid(filename)) {
+			isPathValid = true;
+			isNameValid = true;
 		}
 	}
 
-	ofstream outputFile(fullPath);
-	if (!outputFile.is_open()) {
-		cerr << "Error opening file: " << fullPath << endl;
-		return; // Return on error
+	return filepath + filename;
+}
+
+string getOverwriteConfirmation(const string& fullPath) {
+	while (fileExists(fullPath)) {
+		if (confirmOverwrite(fullPath)) {
+			return fullPath;
+		}
+		else {
+			cout << "Please choose another file." << endl;
+			return getValidFilePath();
+		}
+	}
+	return fullPath;
+}
+
+void exportToFile(const vector<Mammal*>& mammals) {
+	string fullPath = getValidFilePath();
+	fullPath = getOverwriteConfirmation(fullPath);
+
+	// Try to open the file for writing
+	ofstream file(fullPath);
+	if (!file) {
+		cerr << "Error: File is read-only or another error occurred." << endl;
+		file.close();
+
+		// Prompt the user to enter a new path
+		while (true) {
+			cout << "Please enter a new path." << endl;
+			fullPath = getValidFilePath();
+			fullPath = getOverwriteConfirmation(fullPath);
+
+			// Try to open the new file for writing
+			file.open(fullPath);
+			if (file) {
+				break;
+			}
+			else {
+				cerr << "Error: File is read-only or another error occurred." << endl;
+				file.close();
+			}
+		}
 	}
 
 	for (Mammal* mammal : mammals) {
-		outputFile << mammal->getTitle() << ","
+		file << mammal->getTitle() << ","
 			<< mammal->getWeight() << ","
 			<< mammal->getHabitat() << ","
 			<< mammal->getDiet();
 
 		// Check if the mammal is a Herbivore or Carnivore and write additional data
 		if (Herbivore* herbivore = dynamic_cast<Herbivore*>(mammal)) {
-			outputFile << "," << (herbivore->getIsMigrating() ? 1 : 0);
+			file << "," << (herbivore->getIsMigrating() ? 1 : 0);
 		}
 		else if (Carnivore* carnivore = dynamic_cast<Carnivore*>(mammal)) {
-			outputFile << "," << carnivore->getAggressionRate();
+			file << "," << carnivore->getAggressionRate();
 		}
 
-		outputFile << "\n";
+		file << "\n";
 	}
 
-	outputFile.close();
+	file.close();
+	cout << "Data successfully exported to file: " << fullPath << endl;
 }

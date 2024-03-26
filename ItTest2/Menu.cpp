@@ -3,9 +3,12 @@
 
 #include "Menu.h"
 #include "MenuOption.h"
+
 #include "Herbivore.h"
 #include "Carnivore.h"
 #include "Mammal.h"
+#include "MammalController.h"
+
 #include "inputs.h"
 #include "files.h"
 
@@ -41,18 +44,9 @@ void Menu::initializeMenu(std::unique_ptr<MammalController>& mammalController) {
 
 		// Read from file
 		MenuOption(this->READ_FROM_FILE, "Read from file",  [&mammalController]() {
-			bool isPathValid = false;
-			std::string filename = "";
+			std::string filepath = getValidFilePath();
 
-			while (!isPathValid) {
-				filename = getStringUserInput("Input full path to file: ");
-
-				if (isFilePathValid(filename)) {
-					isPathValid = true;
-				}
-			}
-
-			vector<Mammal*> mammalsFromFile = getMammalsFromFile(filename);
+			vector<Mammal*> mammalsFromFile = getMammalsFromFile(filepath);
 
 			if (mammalsFromFile.empty()) {
 				cerr << "Error reading files from file." << endl;
@@ -60,7 +54,7 @@ void Menu::initializeMenu(std::unique_ptr<MammalController>& mammalController) {
 			else {
 				mammalController->setMammals(mammalsFromFile);
 
-				cout << "Successfull read from file!" << endl;
+				cout << endl << "Successfull read from file!" << endl << "Readed " << mammalsFromFile.size() << " mammal(s)!" << endl;
 			}
 		}),
 

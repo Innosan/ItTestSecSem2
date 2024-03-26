@@ -14,7 +14,7 @@ public:
 	virtual void description() {
 		std::cout << "This is an unknown mammal - " << getTitle() << std::endl;
 		std::cout << "Weight: " << getWeight() << " kg" << std::endl;
-		std::cout << "Habitat: " << getHabitat() << std::endl;
+		std::cout << "Habitat: " << getHabitat() << std::endl << std::endl;
 	};
 
 	std::string getTitle() { return title; }
