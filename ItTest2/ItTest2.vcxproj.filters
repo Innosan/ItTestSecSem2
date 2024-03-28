@@ -34,6 +34,15 @@
     <Filter Include="Controllers">
       <UniqueIdentifier>{a660d44a-5a3f-476e-9250-dc95f187c99e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{9fc24588-a9a8-47db-b787-bb94ded3a8bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Models">
+      <UniqueIdentifier>{c58e98ea-561f-4dd5-af27-f62f04466b34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Utility">
+      <UniqueIdentifier>{40295ea2-334f-40cc-976d-47ad2847207b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ItTest2.cpp">
@@ -63,6 +72,18 @@
     <ClCompile Include="files.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
+    <ClCompile Include="TestResult.cpp">
+      <Filter>Tests\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="TestCase.cpp">
+      <Filter>Tests\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="testUtils.cpp">
+      <Filter>Tests\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="testMain.cpp">
+      <Filter>Tests\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Menu.h">
@@ -88,6 +109,18 @@
     </ClInclude>
     <ClInclude Include="files.h">
       <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="testUtils.h">
+      <Filter>Tests\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="TestResult.h">
+      <Filter>Tests\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="TestCase.h">
+      <Filter>Tests\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="testMain.h">
+      <Filter>Tests\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,6 +11,7 @@
 
 #include "inputs.h"
 #include "files.h"
+#include "testMain.h"
 
 void Menu::initializeMenu(std::unique_ptr<MammalController>& mammalController) {
 	vector<MenuOption> items = {
@@ -64,6 +65,10 @@ void Menu::initializeMenu(std::unique_ptr<MammalController>& mammalController) {
 
 			if (mammalsToExport.size() == 0) cout << "No files to export!";
 			else exportToFile(mammalsToExport);
+		}),
+
+		MenuOption(this->RUN_TESTS, "Run tests",  []() {
+			testMain();
 		}),
 
 		// Exit

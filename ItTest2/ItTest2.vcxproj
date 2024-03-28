@@ -136,6 +136,10 @@
     <ClCompile Include="MammalController.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MenuOption.cpp" />
+    <ClCompile Include="TestCase.cpp" />
+    <ClCompile Include="testMain.cpp" />
+    <ClCompile Include="TestResult.cpp" />
+    <ClCompile Include="testUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Carnivore.h" />
@@ -146,6 +150,10 @@
     <ClInclude Include="MammalController.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuOption.h" />
+    <ClInclude Include="TestCase.h" />
+    <ClInclude Include="testMain.h" />
+    <ClInclude Include="TestResult.h" />
+    <ClInclude Include="testUtils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
