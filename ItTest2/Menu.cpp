@@ -41,6 +41,8 @@ void Menu::initializeMenu(std::unique_ptr<MammalController>& mammalController) {
 			default:
 				break;
 			}
+
+			std::cout << "Mammal added!" << endl;
 		}),
 
 		// Read from file

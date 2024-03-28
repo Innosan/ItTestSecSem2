@@ -43,12 +43,7 @@ void testMain() {
 					"Unknown"
 				}
 			},
-			new Mammal {
-				"Base mammal 223",
-				10.0,
-				"Desert",
-				"Unknown"
-			},
+			baseMammal,
 			std::vector<Mammal*> {
 				new Mammal {
 					"Base mammal",
@@ -56,12 +51,7 @@ void testMain() {
 					"Desert",
 					"Unknown"
 				},
-				new Mammal {
-					"Base mammal 2",
-					10.0,
-					"Desert",
-					"Unknown"
-				},
+				baseMammal
 			}
 		),
 		TestCase(
@@ -74,12 +64,7 @@ void testMain() {
 					"Unknown"
 				}
 			},
-			new Carnivore {
-				"Carnivore",
-				20.0,
-				"Forest",
-				0.5
-			},
+			carnivore,
 			std::vector<Mammal*> {
 				new Mammal {
 					"Base mammal",
@@ -87,12 +72,7 @@ void testMain() {
 					"Desert",
 					"Unknown"
 				},
-				new Carnivore {
-					"Carnivore",
-					20.0,
-					"Forest",
-					0.5
-				},
+				carnivore
 			}
 		),
 		TestCase(
@@ -105,12 +85,7 @@ void testMain() {
 					"Unknown"
 				}
 			},
-			new Herbivore {
-				"Herbivore",
-				30.0,
-				"Jungle",
-				true
-			},
+			herbivore,
 			std::vector<Mammal*> {
 				new Mammal {
 					"Base mammal",
@@ -118,31 +93,20 @@ void testMain() {
 					"Desert",
 					"Unknown"
 				},
-				new Herbivore {
-					"Herbivore",
-					30.0,
-					"Jungle",
-					true
-				},
+				herbivore
 			}
 		),
 		TestCase(
 			"Adding object to empty vector",
 			std::vector<Mammal*> {},
-			new Mammal {
-				"Base mammal 2",
-				10.0,
-				"Desert",
-				"Unknown"
-			},
-			std::vector<Mammal*> { 
-				new Mammal{
-					"Base mammal 2",
-					10.0,
-					"Desert",
-					"Unknown"
-				}
-			}
+			baseMammal,
+			std::vector<Mammal*> { baseMammal }
+		),
+		TestCase(
+			"Special case, meant to be failed",
+			std::vector<Mammal*> { baseMammal },
+			carnivore,
+			std::vector<Mammal*> { baseMammal, herbivore }
 		)
 	};
 
