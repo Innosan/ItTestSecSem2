@@ -23,6 +23,8 @@ public:
 	}
 
 	void setMammals(std::vector<Mammal*> newMammals) {
+		this->mammals.clear();
+
 		this->mammals = newMammals;
 	}
 

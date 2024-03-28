@@ -7,31 +7,6 @@
 void testMain() {
 	std::unique_ptr<MammalController> mammalController = std::make_unique<MammalController>();
 
-	// Testing mammals
-	// Mammal 1 - base mammal
-	auto baseMammal = new Mammal {
-		"Base mammal 2",
-		10.0,
-		"Desert",
-		"Unknown"
-	};
-
-	// Mammal 2 - carnivore
-	auto carnivore = new Carnivore {
-		"Carnivore",
-		20.0,
-		"Forest",
-		0.5
-	};
-
-	// Mammal 3 - herbivore
-	auto herbivore = new Herbivore {
-		"Herbivore",
-		30.0,
-		"Jungle",
-		true
-	};
-
 	const auto testCases = std::vector<TestCase> {
 		TestCase(
 			"Adding object of base class to vector",
@@ -43,7 +18,12 @@ void testMain() {
 					"Unknown"
 				}
 			},
-			baseMammal,
+			new Mammal {
+				"Base mammal 2",
+				10.0,
+				"Desert",
+				"Unknown"
+			},
 			std::vector<Mammal*> {
 				new Mammal {
 					"Base mammal",
@@ -51,7 +31,12 @@ void testMain() {
 					"Desert",
 					"Unknown"
 				},
-				baseMammal
+				new Mammal {
+					"Base mammal 2",
+					10.0,
+					"Desert",
+					"Unknown"
+				},
 			}
 		),
 		TestCase(
@@ -64,7 +49,12 @@ void testMain() {
 					"Unknown"
 				}
 			},
-			carnivore,
+			new Carnivore {
+				"Carnivore",
+				20.0,
+				"Forest",
+				0.5
+			},
 			std::vector<Mammal*> {
 				new Mammal {
 					"Base mammal",
@@ -72,7 +62,12 @@ void testMain() {
 					"Desert",
 					"Unknown"
 				},
-				carnivore
+				new Carnivore {
+					"Carnivore",
+					20.0,
+					"Forest",
+					0.5
+				},
 			}
 		),
 		TestCase(
@@ -85,7 +80,12 @@ void testMain() {
 					"Unknown"
 				}
 			},
-			herbivore,
+			new Herbivore {
+				"Herbivore",
+				30.0,
+				"Jungle",
+				true
+			},
 			std::vector<Mammal*> {
 				new Mammal {
 					"Base mammal",
@@ -93,21 +93,64 @@ void testMain() {
 					"Desert",
 					"Unknown"
 				},
-				herbivore
+				new Herbivore {
+					"Herbivore",
+					30.0,
+					"Jungle",
+					true
+				},
 			}
 		),
 		TestCase(
 			"Adding object to empty vector",
 			std::vector<Mammal*> {},
-			baseMammal,
-			std::vector<Mammal*> { baseMammal }
+			new Mammal {
+				"Base mammal 2",
+				10.0,
+				"Desert",
+				"Unknown"
+			},
+			std::vector<Mammal*> {
+				new Mammal{
+					"Base mammal 2",
+					10.0,
+					"Desert",
+					"Unknown"
+				}
+			}
 		),
 		TestCase(
-			"Special case, meant to be failed",
-			std::vector<Mammal*> { baseMammal },
-			carnivore,
-			std::vector<Mammal*> { baseMammal, herbivore }
-		)
+			"Adding base mammal to vector with Carnivore",
+			std::vector<Mammal*> {
+				new Carnivore {
+					"Base mammal 2",
+					10.0,
+					"Desert",
+					0.5
+				},
+			},
+			new Mammal {
+				"Base mammal 2",
+				10.0,
+				"Desert",
+				"Unknown"
+			},
+			std::vector<Mammal*> {
+				new Carnivore{
+					"Base mammal 2",
+					10.0,
+					"Desert",
+					0.5
+				},
+				new Mammal{
+					"Base mammal 2",
+					10.0,
+					"Desert",
+					"Unknown"
+				},
+			}
+		),
+
 	};
 
 	bool allTestsPassed = true;
@@ -123,4 +166,15 @@ void testMain() {
 	allTestsPassed ? 
 		std::cout << "All tests passed!" << std::endl : 
 		std::cout << "Some tests failed!" << std::endl;
+
+	for (auto& testCase : testCases) {
+		// Delete the Mammal objects
+		for (auto mammal : testCase.vectorToTest) {
+			delete mammal;
+		}
+		delete testCase.mammalToAdd;
+		for (auto mammal : testCase.expectedAddResult) {
+			delete mammal;
+		}
+	}
 };
